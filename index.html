@@ -2,22 +2,47 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Splice - Intro & Login</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="logo2.png">
 
     <style>
-        /* --- تنسيقات الشعار (Intro) --- */
+        /* --- تنسيقات أساسية --- */
+        :root {
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --text-white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('background.png') no-repeat center center/cover;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        /* --- شاشة الـ Intro --- */
         #intro-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000000;
+            inset: 0;
+            background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -32,91 +57,92 @@
             mix-blend-mode: screen; 
         }
 
-        /* --- تنسيقات صفحة تسجيل الدخول --- */
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.2);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --ios-red: #ff3b30;
-            --ios-blue: #007aff;
-            --text-white: #ffffff;
-            --input-bg: rgba(255, 255, 255, 0.9);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            height: 100vh;
-            display: flex;
+        /* --- نافذة التثبيت الإجبارية --- */
+        #install-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(25px);
+            z-index: 9000;
+            display: none; /* تظهر برمجياً */
             align-items: center;
             justify-content: center;
-            background: url('background.png') no-repeat center center/cover;
-            background-color: #000;
-            overflow: hidden;
         }
 
+        .modal-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 40px 30px;
+            border-radius: 45px;
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-content img { width: 90px; margin-bottom: 25px; border-radius: 22px; }
+        .modal-content h2 { font-size: 24px; color: #fff; margin-bottom: 15px; font-weight: 800; }
+        .modal-content p { font-size: 15px; color: #ccc; margin-bottom: 35px; line-height: 1.6; }
+
+        .install-btn-now {
+            background: #fff;
+            color: #000;
+            padding: 18px;
+            border-radius: 22px;
+            font-weight: 900;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        .install-btn-now:active { transform: scale(0.95); }
+
+        /* --- صفحة تسجيل الدخول --- */
         .glass-container {
             width: 90%;
             max-width: 380px;
             padding: 40px 30px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             border: 1.5px solid var(--glass-border);
             border-radius: 45px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
             text-align: center;
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .glass-container.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .glass-container.show { opacity: 1; transform: translateY(0); }
 
         .brand-logo {
             margin-bottom: 35px;
             display: flex; align-items: center; justify-content: center;
-            gap: 12px; background: rgba(255, 255, 255, 0.15);
+            gap: 12px; background: rgba(255, 255, 255, 0.1);
             padding: 10px; border-radius: 20px;
         }
+        .brand-logo img { width: 45px; }
+        .brand-logo h1 { color: #fff; font-size: 38px; font-weight: 800; }
 
-        .brand-logo img { width: 45px; height: 45px; object-fit: contain; }
-        .brand-logo h1 { color: var(--text-white); font-size: 38px; font-weight: 800; }
-
-        .input-field { position: relative; margin-bottom: 20px; text-align: right; }
+        .input-field { position: relative; margin-bottom: 20px; }
         .input-field input {
             width: 100%; padding: 16px 50px 16px 15px; border-radius: 18px;
             border: 2px solid #fff; background: var(--input-bg);
-            color: #000; font-size: 16px; outline: none; font-weight: 500;
+            color: #000; font-size: 16px; outline: none; font-weight: 600;
         }
-
-        .input-field svg { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); fill: #333; width: 20px; height: 20px; }
+        .input-field svg { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); fill: #333; width: 20px; }
 
         .main-btn {
             width: 100%; padding: 16px; border-radius: 18px; border: none;
-            background: #fff; color: #000; font-weight: 700; font-size: 17px;
+            background: #fff; color: #000; font-weight: 800; font-size: 17px;
             cursor: pointer; margin-top: 10px;
-        }
-
-        .separator { margin: 25px 0; color: #fff; font-size: 14px; display: flex; align-items: center; }
-        .separator::before, .separator::after { content: ""; flex: 1; height: 2px; background: rgba(255, 255, 255, 0.5); margin: 0 10px; }
-
-        .google-btn {
-            width: 100%; padding: 14px; border-radius: 18px; border: none;
-            background: #fff; color: #000; display: flex; align-items: center;
-            justify-content: center; gap: 12px; font-weight: 600; cursor: pointer;
         }
 
         .custom-alert {
             visibility: hidden; opacity: 0; position: fixed; top: 40px; left: 50%;
             transform: translateX(-50%) translateY(-20px); background: #ff3b30;
             color: white; padding: 16px 30px; border-radius: 25px; z-index: 10000;
-            transition: all 0.4s;
+            transition: all 0.4s; font-weight: bold;
         }
         .custom-alert.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
@@ -127,13 +153,20 @@
         <img src="logo.gif" alt="Logo" class="logo-gif">
     </div>
 
-    <div id="alertBox" class="custom-alert">
-        هذا الحساب غير موجود أو غير مفعل في الاشتراك
+    <div id="install-modal">
+        <div class="modal-content">
+            <img src="logo2.png" alt="App Icon">
+            <h2>تثبيت التطبيق الإلزامي</h2>
+            <p>للمتابعة إلى Splice، يجب تثبيت التطبيق على شاشتك الرئيسية لضمان الخصوصية والسرعة.</p>
+            <button class="install-btn-now" id="btnInstall">تثبيت الآن</button>
+        </div>
     </div>
+
+    <div id="alertBox" class="custom-alert">هذا الحساب غير موجود أو غير مفعل</div>
 
     <div class="glass-container" id="login-container">
         <div class="brand-logo">
-            <img src="logo2.png" alt="Splice Logo" onerror="this.style.display='none'">
+            <img src="logo2.png" alt="Logo">
             <h1>Splice</h1>
         </div>
 
@@ -142,60 +175,74 @@
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 <input type="email" placeholder="البريد الإلكتروني" required>
             </div>
-
             <div class="input-field">
                 <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                 <input type="password" placeholder="كلمة السر" required>
             </div>
-
             <button type="submit" class="main-btn">تسجيل الدخول</button>
         </form>
-
-        <div class="separator">أو</div>
-
-        <button class="google-btn" onclick="triggerAlert()">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            متابعة باستخدام Google
-        </button>
     </div>
 
     <script>
         const introScreen = document.getElementById('intro-screen');
         const loginContainer = document.getElementById('login-container');
-        const alertBox = document.getElementById('alertBox');
-        const loginForm = document.getElementById('loginForm');
+        const installModal = document.getElementById('install-modal');
+        const btnInstall = document.getElementById('btnInstall');
+        let deferredPrompt;
 
-        // تسجيل الـ Service Worker لـ PWA
+        // 1. تسجيل الـ Service Worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js');
-            });
+            navigator.serviceWorker.register('sw.js');
         }
 
-        // حركة الإنترو
+        // 2. التقاط حدث التثبيت
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        // 3. منطق التشغيل بعد الـ Intro
         window.addEventListener('load', () => {
             setTimeout(() => {
                 introScreen.style.opacity = '0';
                 introScreen.style.visibility = 'hidden';
-                loginContainer.classList.add('show');
+
+                // التحقق هل التطبيق مثبت فعلاً (وضع الـ Standalone)
+                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+                if (!isStandalone) {
+                    // إذا لم يكن مثبتاً، أظهر النافذة الإجبارية
+                    installModal.style.display = 'flex';
+                } else {
+                    // إذا كان مثبتاً، انتقل مباشرة لتسجيل الدخول
+                    loginContainer.classList.add('show');
+                }
             }, 5700);
         });
 
-        function triggerAlert() {
-            alertBox.classList.add('show');
-            setTimeout(() => {
-                alertBox.classList.remove('show');
-            }, 4000);
-        }
+        // 4. تنفيذ التثبيت عند الضغط على الزر
+        btnInstall.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        installModal.style.display = 'none';
+                        loginContainer.classList.add('show');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // إذا لم يدعم المتصفح المطلب حالياً
+                alert("يرجى استخدام خيار 'إضافة إلى الشاشة الرئيسية' من إعدادات المتصفح.");
+            }
+        });
 
-        loginForm.addEventListener('submit', (e) => {
+        // 5. تنبيه تسجيل الدخول
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            triggerAlert();
+            const alertBox = document.getElementById('alertBox');
+            alertBox.classList.add('show');
+            setTimeout(() => alertBox.classList.remove('show'), 4000);
         });
     </script>
 </body>
