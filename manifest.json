@@ -1,23 +1,21 @@
 {
-  "name": "SPLICE ELITE",
   "short_name": "Splice",
-  "description": "منصة المواعدة الحصرية والدردشة المباشرة في الجزائر",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "name": "Splice Elite",
+  "description": "Premium Experience",
   "icons": [
     {
       "src": "logo2.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "sizes": "192x192"
     },
     {
       "src": "logo2.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
-  "orientation": "portrait",
-  "scope": "/"
+  "start_url": "https://thelostsoul80-wq.github.io/Spl/",
+  "background_color": "#000000",
+  "display": "standalone",
+  "theme_color": "#000000"
 }
