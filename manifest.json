@@ -1,0 +1,23 @@
+{
+  "name": "SPLICE ELITE",
+  "short_name": "Splice",
+  "description": "منصة المواعدة الحصرية والدردشة المباشرة في الجزائر",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "logo2.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "scope": "/"
+}
