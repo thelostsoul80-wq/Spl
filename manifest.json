@@ -1,20 +1,20 @@
 {
-  "short_name": "Splice",
-  "name": "Splice Elite",
+  "short_name": "Boro",
+  "name": "Boro",
   "description": "Premium Experience",
   "icons": [
     {
-      "src": "logo2.png",
+      "src": "Boro.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo2.png",
+      "src": "Boro.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": "https://thelostsoul80-wq.github.io/Spl/",
+  "start_url": "https:boro.ct.ws",
   "background_color": "#000000",
   "display": "standalone",
   "theme_color": "#000000"
